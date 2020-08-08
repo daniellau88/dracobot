@@ -8,7 +8,7 @@ from dbhelper import *  # imports all user-defined functions to
 TOKEN = os.environ['TELEGRAM_BOT_TOKEN']
 BASE_URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
-# groups based on tolerance level, each player is assigned an 8-character unique alphanumeric identifier - game id
+# groups based on tolerance level, each player is assigned an 4-character unique game identifier - game id
 # 8 groups for RC4 Angel Mortal games: AM1, AM2, AM3, AM4, AM5, AM6, AM7, AM8
 # index to the left: ANGEL | index to the right: MORTAL
 AM = []
@@ -40,16 +40,18 @@ SPEECH_BUBBLE = u"\U0001F4AC"
 THINKING_FACE = u"\U0001F914"
 QUESTION_MARK = u"\U0001F64F"
 MONKEY = u"\U0001F64A"
+DRAGON = u"\U0001F432" #In use for Dragon Trainer Bot
+BLUE_HEART = u"\U0001F499"
 
 # TELEGRAM KEYBOARD KEYS
-ABOUT_THE_BOT_KEY = u"About the Bot" + " " + SPOUTING_WHALE
+ABOUT_THE_BOT_KEY = u"About the Bot" + " " + DRAGON
 ADMIN_KEY = u"/admin"
-ANGEL_KEY = u"/angel"
-ANONYMOUS_CHAT_KEY = u"Angel-Mortal Anonymous Chat" + " " + SPEECH_BUBBLE
+ANGEL_KEY = u"/trainer"
+ANONYMOUS_CHAT_KEY = u"Dragon-Trainer Anonymous Chat" + " " + SPEECH_BUBBLE
 HELP_KEY = u"Help" + " " + QUESTION_MARK
 RULES_KEY = u"Rules" + " " + MONKEY
 MENU_KEY = u"/mainmenu"
-MORTAL_KEY = u"/mortal"
+MORTAL_KEY = u"/dragon"
 SEND_ALL_KEY = u"/Send_All"
 SEND_ONE_KEY = u"/Send_One"
 CHECK_REGIS_KEY = u"/Check_Player_Registration"
@@ -60,18 +62,18 @@ KEYBOARD_OPTIONS = [ANONYMOUS_CHAT_KEY, ABOUT_THE_BOT_KEY, HELP_KEY, RULES_KEY]
 ADMIN_KEYBOARD = [SEND_ALL_KEY, SEND_ONE_KEY, CHECK_REGIS_KEY]
 
 # GREETINGS
-ABOUT_THE_BOT = SPOUTING_WHALE + " *About OrcaBot* " + SPOUTING_WHALE + "\n\n" + CAKE + " Birthday: June 2017\n\n" +\
-                ROBOT + " Currently maintained by Shao Yi\n\n" + SKULL +\
-                " Past Bot Developers: Bai Chuan, Fiz, Youkuan, Kang Ming, Zhi Yu\n\n"
+ABOUT_THE_BOT = DRAGON + " *About DracoBot* " + DRAGON + "\n\n" + CAKE + " Birthday: June 2017\n\n" +\
+                ROBOT + " Currently maintained by Ji Cheng and Daniel Lau\n\n" + SKULL +\
+                " Past Bot Developers: Shao Yi, Bai Chuan, Fiz, Youkuan, Kang Ming, Zhi Yu\n\n"
 AM_GREETING = "Hello there, {}!\n\n" +\
               "Click or type any of the following:\n" +\
-              "/angel: Chat with your Angel\n" +\
-              "/mortal: Chat with your Mortal\n" +\
+              "/trainer: Chat with your Trainer\n" +\
+              "/dragon: Chat with your Dragon\n" +\
               "/mainmenu: Exits the Chat feature, and returns to the Main Menu"
 
-AM_LOGIN_GREETING = "Please enter your 8-character Game ID.\n\n" +\
+AM_LOGIN_GREETING = "Please enter your 4-character Game ID. (Remember Caps!)\n\n" +\
                      "or click /mainmenu to exit the registration process"
-INVALID_PIN = "You have entered the wrong 8-character Game ID. Please try again, or type /mainmenu to exit."
+INVALID_PIN = "You have entered the wrong 4-character Game ID. Please try again, or type /mainmenu to exit."
 REDIRECT_GREETING = "Did you mean: /mainmenu"
 REQUEST_ADMIN_ID = "Please enter your Admin ID to proceed."
 SEND_ADMIN_GREETING = "Hello there, Administrator! What do you want to say to everyone?\n" +\
@@ -79,48 +81,44 @@ SEND_ADMIN_GREETING = "Hello there, Administrator! What do you want to say to ev
                       "Type /mainmenu to exit, once you have made your announcement."
 SEND_CONNECTION_FAILED = u"This feature is unavailable now as he/she has yet to sign in to the game." +\
                          u" Please be patient and try again soon!" + SMILEY + "\n\nType /mainmenu to go back."
-SUCCESSFUL_ANGEL_CONNECTION = "You have been connected with your Angel." +\
+SUCCESSFUL_ANGEL_CONNECTION = "You have been connected with your Trainer." +\
                             " Anything you type here will be sent anonymously to him/her.\n" +\
                             "To exit, type /mainmenu"
-SUCCESSFUL_MORTAL_CONNECTION = "You have been connected with your Mortal." +\
+SUCCESSFUL_MORTAL_CONNECTION = "You have been connected with your Dragon." +\
                                " Anything you type here will be sent anonymously to him/her.\n" +\
                                "To exit, type /mainmenu"
-HELLO_GREETING = "Hello there, {}! Oscar at your service! " + SPOUTING_WHALE
+HELLO_GREETING = "Hello there, {}! DracoBot at your service! Press /mainmenu to bring up keyboard! " + DRAGON
 HELP_MESSAGE = "Hello there, {}!\n\n" +\
-               "Orcabot is a homegrown telegram bot that allows you to anonymously chat with your Angel or Mortal.\n\n" +\
+               "Dragon Trainer Bot is a homegrown telegram bot that allows you to anonymously chat with your Dragon or Trainer.\n\n" +\
                "While in the Main Menu, click on:\n" +\
-               ANONYMOUS_CHAT_KEY + ": To chat with your Angel or Mortal\n" +\
+               ANONYMOUS_CHAT_KEY + ": To chat with your Dragon or Trainer\n" +\
                ABOUT_THE_BOT_KEY + ": To view information about the bot\n" +\
                HELP_KEY + ": To explore this bot's functionality\n" +\
                RULES_KEY + ": To view the game rules\n\n" +\
                "While in the Chat feature, type any of the following to:\n" +\
-               ANGEL_KEY + ": Chat with your Angel\n" +\
-               MORTAL_KEY + ": Chat with your Mortal\n\n" +\
+               ANGEL_KEY + ": Chat with your Trainer\n" +\
+               MORTAL_KEY + ": Chat with your Dragon\n\n" +\
                "Type " + MENU_KEY + " at any point in time to exit the Chat feature, and return to the Main Menu\n\n" +\
-               "Please message @shaozyi @amosaiden if you need technical assistance!\n" +\
+               "Please message @JichNgan @dlau98 if you need technical assistance!\n" +\
                "Thank you and we hope you'll have fun throughout this game! :)"
-GAME_RULES_MESSAGE = "How Discovering True Friends work\n\n" +\
-                     "Each of you who participated will be assigned an Angel and a Mortal. " +\
-                     "Of course, you will know the identity of your Mortal while your angel’s identity will be kept " +\
-                     "from you. Throughout the course of the event, feel free to chat with both your angel and mortal " +\
-                     "through OrcaBot where your identity will be kept secret, and take care of your mortal with " +\
+GAME_RULES_MESSAGE = "Rules of Dragons and Trainers" + DRAGON + "\n\n" +\
+                     "Each of you who participated will be assigned an Angel (Trainer) and a Mortal (Dragon). " +\
+                     "Of course, you will know the identity of your Dragon while your Trainer’s identity will be kept " +\
+                     "from you. Throughout the course of the event, feel free to chat with both your Dragon and Trainer " +\
+                     "through telegram bot where your identity will be kept secret, and take care of your dragonwith " +\
                      "anonymous gift and pranks according to their indicated tolerance levels! " +\
-                     "Of course, you can look forward to seeing what your own angel does for you as well!\n\n" +\
+                     "Of course, you can look forward to seeing what your own trainer does for you as well!\n\n" +\
                      "Explanation for tolerance levels\n\n" +\
-                     "Tolerance Levels\n" +\
                      "1: Gift Exchange, do nice things only!\n" +\
                      "2: Pranks are to be minimal, and no clean up required!\n" +\
-                     "3: Pranks are fine, minimal clean up.\n" +\
-                     "4: Minor inconveniences are encouraged!\n" +\
-                     "5: I don’t mind my door taped up.\n" +\
-                     "1 – 5 can’t come into room\n\n" +\
+                     "3: Pranks are fine, but do take care of what your dragon says is OFF LIMITS\n\n" +\
                      "Dos :)\n" +\
-                     "• Observe the Tolerance Levels your mortals have indicated.\n" +\
-                     "• Try to accommodate (if any) requests of your mortals e.g. avoid allergies\n" +\
+                     "• Observe the Tolerance Levels your dragons have indicated.\n" +\
+                     "• Try to accommodate (if any) requests of your dragons e.g. avoid allergies\n" +\
                      "• Balance out the pranks with gifts - moderation is key!\n" +\
                      "• Try (your best) to keep your identity hidden.\n" +\
                      "• Be active in the event! :)\n" +\
-                     "• Share your pranks and gifts throughout the event in the group chat!\n\n" +\
+                     "• Share your pranks and gifts throughout the event in the Draco group chat!\n\n" +\
                      "Don'ts :(\n" +\
                      "• Cause major damage (eg. breaking a treasured object) even if they’ve indicated no boundaries.\n" +\
                      "• Flout other RC/NUS rules (e.g. theft, possession of alcohol *ahem ahem*).\n" +\
@@ -128,16 +126,19 @@ GAME_RULES_MESSAGE = "How Discovering True Friends work\n\n" +\
                      "(e.g. blockade the walkway, pranks involving powdered substances like flour or curry powder).\n" +\
                      "• Cause fire hazards and hinder evacuation routes.\n" +\
                      "• Write, draw or scribble any obscene/vulgar contents on doors/common area.\n\n" +\
+                     "**IMPORTANT!**\n\n" +\
+                     "NO LIVE ANIMALS OR INSECTS\n" +\
+                     "NO MOVING OF FURNITURE OUT OF THE ROOMS\n\n" +\
                      "If you have any other questions, concerns or doubts, don’t be afraid to reach out to the" +\
                      " organizing comm! We hope you have fun and make new friends as well!\n\n" +\
-                     "Best regards,\n" +\
-                     "Your Organizing Committee"
+                     "Love,\n" +\
+                     "Draco House Comm" + BLUE_HEART
 
 # HELP_MESSAGE = "<User guide for bot features>\n\n"
 # GAME_RULES_MESSAGE = "<Insert games rules>"
 
 # # TELEGRAM KEYBOARD KEYS
-# ABOUT_THE_BOT_KEY = u"About the Bot" + " " + SPOUTING_WHALE
+# ABOUT_THE_BOT_KEY = u"About the Bot" + " " + DRAGON
 # ADMIN_KEY = u"/admin"
 # ANGEL_KEY = u"/angel"
 # ANONYMOUS_CHAT_KEY = u"Angel-Mortal Anonymous Chat" + " " + SPEECH_BUBBLE
@@ -254,10 +255,10 @@ class User:
         elif text == ANONYMOUS_CHAT_KEY:
             chat_ids = [records[2] for records in am_db.get_all_records()]
             if chat_id in chat_ids:       # ??? if 8 digit alphanumeric ID is in the list
-                send_message(AM_GREETING, chat_id, self.name, reply_markup=remove_keyboard())
+                send_message(AM_GREETING.format(self.name), chat_id, self.name, reply_markup=remove_keyboard())
                 self.stage = self.anonymous_chat
             else:
-                send_message(AM_LOGIN_GREETING, chat_id, self.name, reply_markup=remove_keyboard())
+                send_message(AM_LOGIN_GREETING.format(self.name), chat_id, self.name, reply_markup=remove_keyboard())
                 self.stage = self.register
 
         elif text == ADMIN_KEY:
@@ -265,10 +266,10 @@ class User:
             self.stage = self.admin_login
 
         elif text == HELP_KEY:
-            send_message(HELP_MESSAGE, chat_id, self.name, reply_markup=remove_keyboard())
+            send_message(HELP_MESSAGE.format(self.name), chat_id, self.name, reply_markup=remove_keyboard())
 
         elif text == RULES_KEY:
-            send_message(GAME_RULES_MESSAGE, chat_id, self.name, reply_markup=remove_keyboard())
+            send_message(GAME_RULES_MESSAGE.format(self.name), chat_id, self.name, reply_markup=remove_keyboard())
 
         # Reopen main menu if no keywords match.
         else:
@@ -287,15 +288,15 @@ class User:
         if text not in ADMIN_ID:
             send_message(INVALID_PIN, chat_id, self.name, reply_markup=remove_keyboard())
             return
-        else:
-            send_message(SEND_ADMIN_GREETING, chat_id, self.name, reply_markup=remove_keyboard())
-            self.stage = self.send_all
+
         elif text == SEND_ONE_KEY:
             send_message("Please key in the Game ID of the participant", chat_id, self.name)
             self.stage = self.receive_game_id
         elif text == CHECK_REGIS_KEY:
             send_message("Reply 'Y' to check registration status, or 'N' to return to mainmenu.", chat_id, self.name)
-            self.stage = self.check_registration
+        else:
+            send_message(SEND_ADMIN_GREETING, chat_id, self.name, reply_markup=remove_keyboard())
+            self.stage = self.send_all
 
     # helper function that fetches chat_id from database using game_id and sends text to the chat_id
     def fetch_then_send(self, text, game_id):
@@ -333,7 +334,7 @@ class User:
             return
         else:
             am_db.register(user_pin, chat_id, self.name)
-            send_message(AM_GREETING, chat_id, self.name, reply_markup=remove_keyboard())
+            send_message(AM_GREETING.format(self.name), chat_id, self.name, reply_markup=remove_keyboard())
             self.stage = self.anonymous_chat
 
     # user_record[0] = serial number
@@ -341,6 +342,7 @@ class User:
     # user_record[2] = user chat_id
     # user_record[3] = name on telegram
     # user_record[4] = isRegistered todo change to boolean
+
     # Initialises a chat with a user's angel or mortal.
     def anonymous_chat(self, text, chat_id):
         # returns the cursor that has executed the SQL statement in postgres
@@ -404,16 +406,16 @@ class User:
     # Sends a text message to a user's angel.
     def chat_with_angel(self, text, chat_id):
         if self.angel_chat_id != 0:
-            print("Angel to Mortal:")
-            send_message("From your Mortal:\n\n" + text, self.angel_chat_id, self.angel_name, sender_name=self.name)
+            print("Trainer to Dragon:")
+            send_message("From your Dragon:\n\n" + text, self.angel_chat_id, self.angel_name, sender_name=self.name)
         else:
             send_message(SEND_CONNECTION_FAILED, chat_id, self.name)
 
     # Sends a text message to a user's mortal.
     def chat_with_mortal(self, text, chat_id):
         if self.mortal_chat_id != 0:
-            print("Mortal to Angel:")
-            send_message("From your Angel:\n\n" + text, self.mortal_chat_id, self.mortal_name, sender_name=self.name)
+            print("Dragon to Trainer:")
+            send_message("From your Trainer:\n\n" + text, self.mortal_chat_id, self.mortal_name, sender_name=self.name)
         else:
             send_message(SEND_CONNECTION_FAILED, chat_id, self.name)
 
